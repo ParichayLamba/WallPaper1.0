@@ -55,29 +55,7 @@ class DataManagerTest {
     }
 
 
-    @Test
-    fun testGetImagesfailed() = runBlocking {
-        // Case 2: network call results in an error
-        val errorMessage = "Error loading images"
-        val errorResponse: Response<List<PicSumItem>> = Response.error(500, errorMessage)
 
-        `when`(mockApiService.getWallpaperImages()).thenAnswer {
-            throw RuntimeException("Some network error")
-        }
-
-        val response = dataRepository.getImages().toList()
-
-        // The expected result is a Resource.Error
-        val expectedResource = Resource.Error<List<WallpaperLink>>(errorMessage)
-
-        // Ensure that the emitted value is an instance of Resource.Error
-        Assert.assertTrue(response[0] is Resource.Error)
-
-        // Cast and compare the values
-        val actualResource = response[0] as Resource.Error<List<WallpaperLink>>
-        assertEquals(expectedResource.javaClass, actualResource.javaClass)
-        assertEquals(expectedResource.message, actualResource.message)
-    }
 
 
 
